@@ -1,18 +1,13 @@
-﻿using Notion.Client;
+﻿using AllSales.Console;
+using AllSales.Shared.Services;
+using HmInput;
+using NotionOutput;
 
-DatabasesClient CreateDatabasesClient()
+IOutputService outputService = new NotionOutputService();
+IInputService[] inputServices = new IInputService[]
 {
-    var clientOptions = new ClientOptions
-    {
-        AuthToken = "secret_2tjAeD4JT3h1IJA6S8EimxD9gRNfULteXqdCbTHgVFp",
-    };
-    var restClient = new RestClient(clientOptions);
-    var databasesClient = new DatabasesClient(restClient);
-    return databasesClient;
-}
+    new HmInputService(new HttpClient()),
+};
 
-
-var databasesClient = CreateDatabasesClient();
-var response = await databasesClient.QueryAsync("54ba9dc0ebe94b109ec8608497515420", new DatabasesQueryParameters());
-Console.WriteLine();
-
+var app = new Application(outputService, inputServices);
+await app.Run();

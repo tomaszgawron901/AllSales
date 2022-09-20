@@ -5,13 +5,13 @@ namespace NotionOutput;
 
 public class NotionOutputService : IOutputService
 {
-    public Task AddProducts(List<Product> products)
+    public async Task AddProducts(List<Product> products)
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
-    public Task ClearProducts()
+    public async Task ClearProducts()
     {
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 }
