@@ -11,7 +11,7 @@ public class HmInputService : IInputService
 {
     private readonly HttpClient _httpClient;
     private readonly Uri baseUri = new Uri("https://www2.hm.com");
-    private readonly int fetchBatchSize = 36;
+    private readonly int fetchBatchSize = 500;
 
     public HmInputService(HttpClient client)
     {

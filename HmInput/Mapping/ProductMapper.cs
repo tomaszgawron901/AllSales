@@ -1,4 +1,6 @@
-﻿using AllSales.Shared.Models;
+﻿using AllSales.Shared.Collections;
+using AllSales.Shared.Enums;
+using AllSales.Shared.Models;
 using HmInput.Models;
 
 namespace HmInput.Mapping;
@@ -24,7 +26,26 @@ internal static class ProductMapper
             return false;
         }
 
-        product = new Product(name, uri, price.Value, salePrice.Value);
+        GenderType? gender = null;
+        if (hmProduct.Category is not null)
+        {
+            var categories = hmProduct.Category.Split('_');
+
+            if (categories.Length > 0)
+            {
+                if (categories[0].Equals("men"))
+                {
+                    gender = GenderType.Male;
+                }
+                else if(categories[0].Equals("women"))
+                {
+                    gender = GenderType.Female;
+                }
+            }
+        }
+        
+
+        product = new Product(name, uri, price.Value, salePrice.Value, Shops.HM, gender);
         return true;
     }
 }
