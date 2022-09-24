@@ -1,6 +1,5 @@
 ﻿using AllSales.Shared.Models;
 using AllSales.Shared.Services;
-using Microsoft.Extensions.Configuration;
 using Notion.Client;
 using NotionOutput.Mapping;
 
@@ -11,11 +10,11 @@ public class NotionOutputService : IOutputService
     private readonly INotionClient _notionClient;
     private readonly string databaseId = "9ebd82cb4230470b997a29716c413ee8";
 
-    public NotionOutputService(IConfiguration configuration)
+    public NotionOutputService()
     {
         _notionClient = NotionClientFactory.Create(new ClientOptions
         {
-            AuthToken = configuration.GetSection("Notion:AuthToken").Value,
+            AuthToken = Environment.GetEnvironmentVariable("Notion:AuthToken"),
         });
     }
 
