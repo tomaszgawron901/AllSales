@@ -4,6 +4,9 @@ namespace HmInput.Models;
 
 internal class HmProduct
 {
+    [JsonPropertyName("articleCode")]
+    public string? ArticleCode { get; set; }
+    
     [JsonPropertyName("link")]
     public string? Link { get; set; }
 

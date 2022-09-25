@@ -15,11 +15,15 @@ public class Application
 
     public async Task Run()
     {
-        await outputService.ClearProducts();
+        await outputService.Pull();
         foreach (var service in inputServices)
         {
             var products = await service.GetSaleProducts();
-            await outputService.AddProducts(products);
+            foreach (var product in products)
+            {
+                outputService.AddOrUpdate(product);
+            }
         }
+        await outputService.Push();
     }
 }

@@ -2,14 +2,15 @@
 using AllSales.Shared.Enums;
 using AllSales.Shared.Models;
 using HmInput.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace HmInput.Mapping;
 
-internal static class ProductMapper
+internal static class ProductMapping
 {
-    public static bool TryMapToProduct(HmProduct hmProduct, out Product? product)
+    public static bool TryMapToProduct(HmProduct hmProduct,[MaybeNullWhen(false)] out Product product)
     {
-        if (hmProduct.Link is null || hmProduct.Price is null || hmProduct.RedPrice is null)
+        if (hmProduct.Link is null || hmProduct.Price is null || hmProduct.RedPrice is null || hmProduct.ArticleCode is null)
         {
             product = null;
             return false;
@@ -17,8 +18,8 @@ internal static class ProductMapper
         
         string name = hmProduct.Title ?? string.Empty;
         Uri uri = new Uri($"{ApiEndpoints.HmBaseUri}{hmProduct.Link}");
-        decimal? price = PriceMapper.MapToDecimal(hmProduct.Price);
-        decimal? salePrice = PriceMapper.MapToDecimal(hmProduct.RedPrice);
+        double? price = PriceMapper.MapToDouble(hmProduct.Price);
+        double? salePrice = PriceMapper.MapToDouble(hmProduct.RedPrice);
 
         if (price is null || salePrice is null)
         {
@@ -45,7 +46,7 @@ internal static class ProductMapper
         }
         
 
-        product = new Product(name, uri, price.Value, salePrice.Value, Shops.HM, gender);
+        product = new Product(Product.CreateProductId(Shops.HM, hmProduct.ArticleCode), name, uri, price.Value, salePrice.Value, Shops.HM, gender);
         return true;
     }
 }

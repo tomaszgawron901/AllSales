@@ -1,7 +1,9 @@
 ﻿using AllSales.Shared.Models;
 using AllSales.Shared.Services;
 using Notion.Client;
+using NotionOutput.Enums;
 using NotionOutput.Mapping;
+using NotionOutput.Models;
 
 namespace NotionOutput;
 
@@ -9,6 +11,8 @@ public class NotionOutputService : IOutputService
 {
     private readonly INotionClient _notionClient;
     private readonly string databaseId = "9ebd82cb4230470b997a29716c413ee8";
+    private readonly ProductRepository _productRepository = new();
+    private readonly List<string> brokenPageIds = new();
 
     public NotionOutputService()
     {
@@ -22,55 +26,39 @@ public class NotionOutputService : IOutputService
     {
         _notionClient = notionClient;
     }
-
-    public async Task AddProducts(List<Product> products)
+    
+    public void AddOrUpdate(Product product)
     {
-        foreach (var product in products)
-        {
-            var builder = PagesCreateParametersBuilder.Create(new DatabaseParentInput
-            {
-                DatabaseId = databaseId,
-            })
-            .AddProperty("Name", new TitlePropertyValue
-            {
-                Title = new List<RichTextBase> { new RichTextText { PlainText = product.Name, Text = new Text { Content = product.Name } } },
-            })
-            .AddProperty("NormalPrice", new NumberPropertyValue {
-                Number = (double?)product.NormalPrice,
-            })
-            .AddProperty("SalePrice", new NumberPropertyValue
-            {
-                Number = (double?)product.SalePrice,
-            })
-            .AddProperty("URL", new UrlPropertyValue
-            {
-                Url = product.Uri.ToString()
-            })
-            .AddProperty("Shop", new SelectPropertyValue
-            {
-                Select = new SelectOption { Name = product.Shop },
-            });
-
-            if (product.Gender is not null)
-            {
-                builder = builder.AddProperty("Gender", NotionMapping.MapGenderToProperty(product.Gender.Value));
-            }
-
-            var parameters = builder.Build();
-            await _notionClient.Pages.CreateAsync(parameters);
-        }
+        _productRepository.AddOrUpdate(product);
     }
 
-    public async Task ClearProducts()
+    public async Task Pull()
     {
+        _productRepository.Clear();
+        brokenPageIds.Clear();
         var paginatedOutput = await _notionClient.Databases.QueryAsync(databaseId, new DatabasesQueryParameters { });
 
         while (paginatedOutput is not null)
         {
-            await DeletePages(paginatedOutput.Results);
+            foreach (var page in paginatedOutput.Results)
+            {
+                if(page is null)
+                {
+                    continue;
+                }
+
+                if(page.TryMapToProduct(out var product))
+                {
+                    _productRepository.Put(new ProductVersionObject(product) { NotionId = page.Id, Version = VersionType.Old });
+                }
+                else
+                {
+                    brokenPageIds.Add(page.Id);
+                }
+            }
 
             if (!paginatedOutput.HasMore) { break; }
-            
+
             paginatedOutput = await _notionClient.Databases.QueryAsync(
                 databaseId,
                 new DatabasesQueryParameters
@@ -81,11 +69,65 @@ public class NotionOutputService : IOutputService
         }
     }
 
-    private async Task DeletePages(List<Page> pages)
+    public Task Push()
     {
-        foreach (var page in pages)
+        List<Task> tasks = new()
         {
-            await _notionClient.Pages.UpdateAsync(page.Id, new PagesUpdateParameters { Archived = true });
+            DeletePagesById(brokenPageIds),
+        };
+        foreach (var versionObj in _productRepository.GetProducts())
+        {
+            if (versionObj.Version is VersionType.Old )
+            {
+                if(versionObj.NotionId is not null)
+                {
+                     tasks.Add(DeletePageById(versionObj.NotionId));
+                }
+            }
+            else if(versionObj.Version is VersionType.New)
+            {
+                tasks.Add(AddProduct(versionObj.Product));
+            }
+            else if(versionObj.Version is VersionType.Updated)
+            {
+                if (versionObj.NotionId is not null)
+                {
+                    tasks.Add(UpdateProduct(versionObj.NotionId, versionObj.Product));
+                } 
+            }
         }
+        return Task.WhenAll(tasks);
+    }
+
+    private Task DeletePageById(string pageId)
+    {
+        var parameters = new PagesUpdateParameters { Archived = true };
+        return _notionClient.Pages.UpdateAsync(pageId, parameters);
+    }
+
+    private Task DeletePagesById(IEnumerable<string> pageIds)
+    {
+        var parameters = new PagesUpdateParameters { Archived = true };
+        IEnumerable<Task> tasks = pageIds.Select(pageId => _notionClient.Pages.UpdateAsync(pageId, parameters));
+        return Task.WhenAll(tasks);
+    }
+
+    private Task UpdateProduct(string pageId, Product product)
+    {
+        var parameters = new PagesUpdateParameters
+        {
+            Properties = ProductMapping.MapToProperties(product)
+        };
+        return _notionClient.Pages.UpdateAsync(pageId, parameters);
+    }
+
+    private Task AddProduct(Product product)
+    {
+        var parameters = new PagesCreateParameters
+        {
+            Parent = new DatabaseParentInput { DatabaseId = databaseId },
+            Properties = ProductMapping.MapToProperties(product),
+        };
+        return _notionClient.Pages.CreateAsync(parameters);
     }
 }

@@ -4,7 +4,7 @@ namespace HmInput.Mapping;
 
 internal static class PriceMapper
 {
-    public static decimal? MapToDecimal(string price)
+    public static double? MapToDouble(string price)
     {
         if(price is null)
         {
@@ -16,7 +16,7 @@ internal static class PriceMapper
 
         if(match is not null && double.TryParse(match.Value, out var number))
         {
-            return (decimal?)number;
+            return number;
         }
         return null;
     }

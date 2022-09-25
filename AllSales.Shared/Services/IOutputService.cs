@@ -4,6 +4,7 @@ namespace AllSales.Shared.Services;
 
 public interface IOutputService
 {
-    Task ClearProducts();
-    Task AddProducts(List<Product> products);
+    Task Pull();
+    Task Push();
+    void AddOrUpdate(Product product);
 }

@@ -50,7 +50,7 @@ public class HmInputService : IInputService
 
             foreach (var hmProduct in response.Products)
             {
-                if(ProductMapper.TryMapToProduct(hmProduct, out var product) && product is not null)
+                if(ProductMapping.TryMapToProduct(hmProduct, out var product) && product is not null)
                 {
                     saleProducts.Add(product);
                 }

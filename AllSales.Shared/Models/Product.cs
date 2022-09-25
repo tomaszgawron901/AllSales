@@ -2,17 +2,20 @@
 
 namespace AllSales.Shared.Models;
 
-public class Product
+public sealed class Product
 {
+    public string ShopId { get; set; }
     public string Name { get; }
     public Uri Uri { get; }
-    public decimal NormalPrice { get; }
-    public decimal SalePrice { get; }
+    public double NormalPrice { get; }
+    public double SalePrice { get; }
     public string Shop { get; }
     public GenderType? Gender { get; }
+    
 
-    public Product(string name, Uri uri, decimal normalPrice, decimal salePrice, string shop, GenderType? gender)
+    public Product(string shopId, string name, Uri uri, double normalPrice, double salePrice, string shop, GenderType? gender)
     {
+        ShopId = shopId;
         Name = name;
         Uri = uri;
         NormalPrice = normalPrice;
@@ -20,5 +23,9 @@ public class Product
         Shop = shop;
         Gender = gender;
     }
-    
+
+    public static string CreateProductId(string shop, string shopId)
+    {
+        return $"{shop}_{shopId}";
+    }
 }
