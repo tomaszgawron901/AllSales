@@ -10,7 +10,7 @@ internal static class ProductMapping
 {
     public static bool TryMapToProduct(HmProduct hmProduct,[MaybeNullWhen(false)] out Product product)
     {
-        if (hmProduct.Link is null || hmProduct.Price is null || hmProduct.RedPrice is null || hmProduct.ArticleCode is null)
+        if (hmProduct.Link is null || hmProduct.Price is null || hmProduct.ArticleCode is null)
         {
             product = null;
             return false;
@@ -19,7 +19,16 @@ internal static class ProductMapping
         string name = hmProduct.Title ?? string.Empty;
         Uri uri = new Uri($"{ApiEndpoints.HmBaseUri}{hmProduct.Link}");
         double? price = PriceMapper.MapToDouble(hmProduct.Price);
-        double? salePrice = PriceMapper.MapToDouble(hmProduct.RedPrice);
+
+        double? salePrice = null;
+        if (!string.IsNullOrWhiteSpace(hmProduct.RedPrice))
+        {
+            salePrice = PriceMapper.MapToDouble(hmProduct.RedPrice);
+        }
+        else if (!string.IsNullOrWhiteSpace(hmProduct.YellowPrice))
+        {
+            salePrice = PriceMapper.MapToDouble(hmProduct.YellowPrice);
+        }
 
         if (price is null || salePrice is null)
         {
@@ -38,7 +47,7 @@ internal static class ProductMapping
                 {
                     gender = GenderType.Male;
                 }
-                else if(categories[0].Equals("women"))
+                else if(categories[0].Equals("ladies"))
                 {
                     gender = GenderType.Female;
                 }

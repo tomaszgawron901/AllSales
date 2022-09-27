@@ -21,4 +21,7 @@ internal class HmProduct
 
     [JsonPropertyName("redPrice")]
     public string? RedPrice { get; set; }
+
+    [JsonPropertyName("yellowPrice")] 
+    public string? YellowPrice { get; set; }
 }
