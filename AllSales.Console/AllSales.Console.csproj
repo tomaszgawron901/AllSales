@@ -13,6 +13,7 @@
     <ProjectReference Include="..\AllSales.Shared\AllSales.Shared.csproj" />
     <ProjectReference Include="..\HmInput\HmInput.csproj" />
     <ProjectReference Include="..\NotionOutput\NotionOutput.csproj" />
+    <ProjectReference Include="..\ZalandoInput\ZalandoInput.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Settings.job">
