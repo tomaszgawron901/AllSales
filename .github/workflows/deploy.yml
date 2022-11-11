@@ -46,16 +46,3 @@ jobs:
       name: 'Development'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
-    - name: Download artifact from build job
-      uses: actions/download-artifact@v3
-      with:
-        name: .net-app
-
-    - name: Deploy to Azure Web App
-      id: deploy-to-webapp
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: 'AllSales'
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile }}
-        package: ${{env.DOTNET_ROOT}}/myapp
