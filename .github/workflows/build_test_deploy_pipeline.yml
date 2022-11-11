@@ -1,7 +1,7 @@
-name: build_test
+name: build_test_deploy
 
 on:
-  pull_request:
+  push:
     branches: [ "feature/create_github_workflow" ]
 
 jobs:
@@ -11,4 +11,8 @@ jobs:
   test:
     needs: build
     uses: ./.github/workflows/test.yml
-      
+
+  deploy:
+    needs: [build, test]
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
