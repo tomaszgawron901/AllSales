@@ -17,8 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AllSales.Console\AllSales.Console.csproj" />
-    <ProjectReference Include="..\AllSales.Shared\AllSales.Shared.csproj" />
+    <ProjectReference Include="..\..\src\AllSales.Console\AllSales.Console.csproj" />
+    <ProjectReference Include="..\..\src\AllSales.Shared\AllSales.Shared.csproj" />
   </ItemGroup>
 
 </Project>
