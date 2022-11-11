@@ -43,8 +43,8 @@ jobs:
       run: dotnet restore ${{env.TEST_PROJECT_PATH}}
 
     - name: Build
-      run: dotnet build ${{env.TEST_PROJECT_PATH}} --configuration Release --no-restore
+      run: dotnet build ${{env.TEST_PROJECT_PATH}} -c Release --no-restore
       
     - name: Test
-      run: dotnet test ${{env.TEST_PROJECT_PATH}} --no-build --verbosity normal
+      run: dotnet test ${{env.TEST_PROJECT_PATH}} -c Release --no-build --verbosity normal
       
