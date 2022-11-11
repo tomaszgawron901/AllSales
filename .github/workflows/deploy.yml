@@ -19,19 +19,14 @@ jobs:
       with:
         dotnet-version: 6.0.x
 
-    - name: Set up dependency caching for faster builds
-      uses: actions/cache@v3
-      with:
-        path: ~/.nuget/packages
-        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-nuget-
+    - name: Restore
+      run: dotnet restore ${{ env.PROJECT_PATCH }}
 
     - name: Build
-      run: dotnet build ${{ env.PROJECT_PATCH }} -c Release
+      run: dotnet build ${{ env.PROJECT_PATCH }} -c Release --no-restore
 
     - name: Publish
-      run: dotnet publish ${{ env.PROJECT_PATCH }} -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      run: dotnet publish ${{ env.PROJECT_PATCH }} --configuration Release -o ${{env.DOTNET_ROOT}}/myapp
 
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
