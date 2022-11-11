@@ -22,4 +22,4 @@ jobs:
       run: dotnet restore ${{ env.PROJECT_PATH }}
 
     - name: Build
-      run: dotnet build ${{env.PROJECT_PATH}} --configuration Release --no-restore
+      run: dotnet build ${{env.PROJECT_PATH}} --no-restore
