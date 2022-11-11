@@ -4,10 +4,10 @@ on:
   workflow_call:
 
 env:
-  PROJECT_PATCH: src\AllSales.Console\AllSales.Console.csproj
+  PROJECT_PATCH: src/AllSales.Console/AllSales.Console.csproj
 
 jobs:
-  build:
+  deploy:
 
     runs-on: ubuntu-latest
 
