@@ -6,7 +6,7 @@ on:
 
 env:
   WORKFLOW_ROOT: tomaszgawron901/AllSales/.github/workflows
-  PROJECT_PATCH: src\AllSales.Console\AllSales.Console.csproj
+  PROJECT_PATH: src\AllSales.Console\AllSales.Console.csproj
 
 jobs:
   build:
