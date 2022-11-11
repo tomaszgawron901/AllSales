@@ -1,0 +1,16 @@
+name: build_test
+
+on:
+  push:
+    branches: [ "feature/create_github_workflow" ]
+
+env:
+  WORKFLOW_ROOT: tomaszgawron901/AllSales/.github/workflows
+
+jobs:
+  Build:
+    uses: ${{ env.WORKFLOW_ROOT }}/build.yml
+
+  Test:
+    needs: build
+    uses: ${{ env.WORKFLOW_ROOT }}/test.yml
