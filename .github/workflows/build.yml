@@ -18,8 +18,13 @@ jobs:
       with:
         dotnet-version: 6.0.x
 
-    - name: Restore dependencies
-      run: dotnet restore ${{env.PROJECT_PATH}}
+    - name: Set up dependency caching for faster builds
+      uses: actions/cache@v3
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
 
     - name: Build
-      run: dotnet build ${{env.PROJECT_PATH}} --configuration Release --no-restore
+      run: dotnet build ${{env.PROJECT_PATH}} -c Release
