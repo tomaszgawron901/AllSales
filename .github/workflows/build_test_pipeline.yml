@@ -9,8 +9,8 @@ env:
 
 jobs:
   Build:
-    uses: ${{ env.WORKFLOW_ROOT }}/build.yml
+    uses: ${{ env.WORKFLOW_ROOT }}/build.yml@feature/create_github_workflow
 
   Test:
     needs: build
-    uses: ${{ env.WORKFLOW_ROOT }}/test.yml
+    uses: ${{ env.WORKFLOW_ROOT }}/test.yml@feature/create_github_workflow
