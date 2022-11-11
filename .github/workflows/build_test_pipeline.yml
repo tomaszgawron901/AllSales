@@ -2,7 +2,7 @@ name: build_test
 
 on:
   pull_request:
-    branches: [ "feature/create_github_workflow" ]
+    branches: [ "master" ]
 
 jobs:
   build:

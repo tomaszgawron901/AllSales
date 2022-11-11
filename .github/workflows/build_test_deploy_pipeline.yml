@@ -2,7 +2,7 @@ name: build_test_deploy
 
 on:
   push:
-    branches: [ "feature/create_github_workflow" ]
+    branches: [ "master" ]
 
 jobs:
   build:
