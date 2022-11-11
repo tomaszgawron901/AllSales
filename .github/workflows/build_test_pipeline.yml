@@ -8,9 +8,20 @@ env:
   WORKFLOW_ROOT: tomaszgawron901/AllSales/.github/workflows
 
 jobs:
-  Build:
-    uses: ${{ env.WORKFLOW_ROOT }}/build.yml@feature/create_github_workflow
+  build:
 
-  Test:
-    needs: build
-    uses: ${{ env.WORKFLOW_ROOT }}/test.yml@feature/create_github_workflow
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore ${{env.PROJECT_PATH}}
+
+    - name: Build
+      run: dotnet build ${{env.PROJECT_PATH}} --configuration Release --no-restore
