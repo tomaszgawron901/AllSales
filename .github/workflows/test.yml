@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 env:
-  PROJECT_PATH: tests\AllSales.Console.UnitTests\AllSales.Console.UnitTests.csproj
+  TEST_PROJECT_PATH: tests/AllSales.Console.UnitTests/AllSales.Console.UnitTests.csproj
 
 jobs:
   Test:
@@ -12,10 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ github.event.workflow_run.head_branch }}
+    - uses: actions/checkout@v3
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
@@ -23,10 +20,10 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Restore dependencies
-      run: dotnet restore ${{env.PROJECT_PATH}}
+      run: dotnet restore ${{env.TEST_PROJECT_PATH}}
 
     - name: Build
-      run: dotnet build ${{env.PROJECT_PATH}} --configuration Release --no-restore
+      run: dotnet build ${{env.TEST_PROJECT_PATH}} -c Release --no-restore
       
     - name: Test
-      run: dotnet test ${{env.PROJECT_PATH}} --no-build --verbosity normal
+      run: dotnet test ${{env.TEST_PROJECT_PATH}} -c Release --no-build --verbosity normal
