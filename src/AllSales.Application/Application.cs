@@ -1,6 +1,6 @@
 ﻿using AllSales.Shared.Services;
 
-namespace AllSales.Console;
+namespace AllSales.Application;
 
 public class Application
 {

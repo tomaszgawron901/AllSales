@@ -1,10 +1,8 @@
-﻿using AllSales.Console;
+﻿using AllSales.Application;
 using AllSales.Shared.Services;
 using HmInput;
 using Microsoft.Extensions.Configuration;
 using NotionOutput;
-
-
 
 
 if (Environment.GetEnvironmentVariable("Notion:AuthToken") is null)
