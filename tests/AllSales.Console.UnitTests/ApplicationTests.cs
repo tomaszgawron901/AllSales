@@ -28,7 +28,7 @@ public class ApplicationTests
 
         var outputServiceMock = new Mock<IOutputService>();
 
-        var app = new Application(outputServiceMock.Object, inputServiceMock1.Object, inputServiceMock2.Object);
+        var app = new Application.Application(outputServiceMock.Object, inputServiceMock1.Object, inputServiceMock2.Object);
 
         // Act
         await app.Run();
