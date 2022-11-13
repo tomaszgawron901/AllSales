@@ -5,6 +5,7 @@ on:
 
 env:
   PROJECT_PATH: src/AllSales.Console/AllSales.Console.csproj
+  AZURE_WEBAPP_PACKAGE_PATH: '.'
 
 jobs:
   publish:
@@ -50,4 +51,4 @@ jobs:
         app-name: 'AllSales'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile }}
-        package: ${{env.DOTNET_ROOT}}/myapp
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
