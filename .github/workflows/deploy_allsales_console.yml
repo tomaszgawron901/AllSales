@@ -1,4 +1,4 @@
-name: deploy
+name: deploy_allsales_console
 
 on:
   workflow_call:
@@ -7,7 +7,7 @@ env:
   PROJECT_PATH: src/AllSales.Console/AllSales.Console.csproj
 
 jobs:
-  deploy:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,10 +23,23 @@ jobs:
       run: dotnet restore ${{ env.PROJECT_PATH }}
 
     - name: Build
-      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore
+      run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
 
     - name: Publish
-      run: dotnet publish ${{ env.PROJECT_PATH }} -o ${{env.DOTNET_ROOT}}/myapp
+      run: dotnet publish ${{ env.PROJECT_PATH }} -c Release -o ${{env.DOTNET_ROOT}}/myapp
+    
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v3
+      with:
+        name: .net-app
+        path: ${{env.DOTNET_ROOT}}/myapp
+
+  deploy:
+    needs: publish
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v3
+      with:
+        name: .net-app
 
     - name: Deploy to Azure Web App
       id: deploy-to-webapp

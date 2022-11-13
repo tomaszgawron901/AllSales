@@ -1,10 +1,8 @@
-name: build
+name: build_solution
 
 on:
   workflow_call:
 
-env:
-  PROJECT_PATH: src/AllSales.Console/AllSales.Console.csproj
 
 jobs:
   build:
@@ -19,7 +17,7 @@ jobs:
         dotnet-version: 6.0.x
 
     - name: Restore
-      run: dotnet restore ${{ env.PROJECT_PATH }}
+      run: dotnet restore
 
     - name: Build
-      run: dotnet build ${{env.PROJECT_PATH}} --no-restore
+      run: dotnet build -c Release --no-restore
