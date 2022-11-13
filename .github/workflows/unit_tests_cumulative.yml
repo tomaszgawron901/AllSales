@@ -1,4 +1,4 @@
-name: test
+name: unit_tests_cumulative
 
 on:
   workflow_call:
@@ -7,10 +7,8 @@ env:
   TEST_PROJECT_PATH: tests/AllSales.Console.UnitTests/AllSales.Console.UnitTests.csproj
 
 jobs:
-  Test:
-
+  AllSales_Console_UnitTests:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
 
