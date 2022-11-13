@@ -7,10 +7,8 @@ env:
   TEST_PROJECT_PATH: tests/AllSales.Console.UnitTests/AllSales.Console.UnitTests.csproj
 
 jobs:
-  AllSales.Console.UnitTests:
-
+  AllSales_Console_UnitTests:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
 
