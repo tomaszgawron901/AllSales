@@ -36,6 +36,8 @@ jobs:
 
   deploy:
     needs: publish
+    runs-on: ubuntu-latest
+    steps:
     - name: Download artifact from build job
       uses: actions/download-artifact@v3
       with:
