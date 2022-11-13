@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 env:
-  TEST_PROJECT_PATH: tests/AllSales.Console.UnitTests/AllSales.Console.UnitTests.csproj
+  TEST_PROJECT_PATH: tests/AllSales.Application.UnitTests/AllSales.Application.UnitTests.csproj
 
 jobs:
   AllSales_Console_UnitTests:

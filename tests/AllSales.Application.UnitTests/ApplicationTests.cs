@@ -1,8 +1,8 @@
+using AllSales.Application.Services;
 using AllSales.Shared.Models;
-using AllSales.Shared.Services;
 using Moq;
 
-namespace AllSales.Console.UnitTests;
+namespace AllSales.Application.UnitTests;
 
 [TestClass]
 public class ApplicationTests
@@ -15,7 +15,7 @@ public class ApplicationTests
         var product2 = CreateEmptyProduct();
         var product3 = CreateEmptyProduct();
         var product4 = CreateEmptyProduct();
-        
+
         var inputServiceMock1 = new Mock<IInputService>();
         inputServiceMock1
             .Setup(x => x.GetSaleProducts())
@@ -28,7 +28,7 @@ public class ApplicationTests
 
         var outputServiceMock = new Mock<IOutputService>();
 
-        var app = new Application.Application(outputServiceMock.Object, inputServiceMock1.Object, inputServiceMock2.Object);
+        var app = new Application(outputServiceMock.Object, inputServiceMock1.Object, inputServiceMock2.Object);
 
         // Act
         await app.Run();

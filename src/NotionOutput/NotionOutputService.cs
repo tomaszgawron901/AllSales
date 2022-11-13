@@ -1,5 +1,5 @@
-﻿using AllSales.Shared.Models;
-using AllSales.Shared.Services;
+﻿using AllSales.Application.Services;
+using AllSales.Shared.Models;
 using Notion.Client;
 using NotionOutput.Enums;
 using NotionOutput.Mapping;
