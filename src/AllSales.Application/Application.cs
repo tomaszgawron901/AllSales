@@ -1,4 +1,4 @@
-﻿using AllSales.Shared.Services;
+﻿using AllSales.Application.Services;
 
 namespace AllSales.Application;
 

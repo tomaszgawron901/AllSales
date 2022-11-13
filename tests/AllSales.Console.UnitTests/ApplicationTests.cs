@@ -1,5 +1,5 @@
+using AllSales.Application.Services;
 using AllSales.Shared.Models;
-using AllSales.Shared.Services;
 using Moq;
 
 namespace AllSales.Console.UnitTests;

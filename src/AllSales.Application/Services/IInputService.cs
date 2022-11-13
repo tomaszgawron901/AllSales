@@ -1,6 +1,6 @@
 ﻿using AllSales.Shared.Models;
 
-namespace AllSales.Shared.Services;
+namespace AllSales.Application.Services;
 
 public interface IInputService
 {

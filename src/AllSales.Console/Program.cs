@@ -1,5 +1,5 @@
 ﻿using AllSales.Application;
-using AllSales.Shared.Services;
+using AllSales.Application.Services;
 using HmInput;
 using Microsoft.Extensions.Configuration;
 using NotionOutput;
