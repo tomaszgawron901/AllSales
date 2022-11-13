@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\AllSales.Application\AllSales.Application.csproj" />
-    <ProjectReference Include="..\..\src\AllSales.Shared\AllSales.Shared.csproj" />
   </ItemGroup>
 
 </Project>
